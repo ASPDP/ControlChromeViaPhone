@@ -351,6 +351,9 @@
     e.preventDefault();
     send({ type: "centerCursor" });
   });
+  document.getElementById("btn-center").addEventListener("click", () => {
+    send({ type: "centerCursor" });
+  });
 
   document.getElementById("btn-scroll-up").addEventListener("touchstart", (e) => {
     e.preventDefault();
