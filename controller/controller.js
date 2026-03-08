@@ -73,6 +73,9 @@
   let pinchStartDist = 0;
   let isPinching = false;
 
+  // Drag state
+  let isDragging = false;
+
   function showIndicator(id, x, y) {
     let el = indicators.get(id);
     if (!el) {
@@ -157,6 +160,7 @@
 
     // In drag mode, start drag from center of browser window
     if (mode === "drag" && activeTouches.size === 1) {
+      isDragging = true;
       send({ type: "drag", phase: "start", fromCenter: true });
     }
   }, { passive: false });
@@ -243,9 +247,12 @@
 
       if (!state) continue;
 
-      // In drag mode, end the drag
+      // In drag mode, end the drag only when all fingers are lifted
       if (mode === "drag") {
-        send({ type: "drag", phase: "end" });
+        if (isDragging && activeTouches.size === 0) {
+          isDragging = false;
+          send({ type: "drag", phase: "end" });
+        }
         continue;
       }
 
@@ -285,6 +292,11 @@
     for (const t of e.changedTouches) {
       hideIndicator(t.identifier);
       activeTouches.delete(t.identifier);
+    }
+    // End drag if active so cursor resets to center
+    if (mode === "drag" && isDragging && activeTouches.size === 0) {
+      isDragging = false;
+      send({ type: "drag", phase: "end" });
     }
     clearLongPress();
     isPinching = false;
