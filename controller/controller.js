@@ -347,6 +347,11 @@
     }
   });
 
+  document.getElementById("btn-center").addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    send({ type: "centerCursor" });
+  });
+
   document.getElementById("btn-scroll-up").addEventListener("touchstart", (e) => {
     e.preventDefault();
     send({ type: "scroll", dx: 0, dy: -SCROLL_STEP });

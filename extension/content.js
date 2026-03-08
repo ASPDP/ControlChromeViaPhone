@@ -247,10 +247,8 @@
     // Drag for map panning (dispatches as drag sequence)
     drag(data) {
       if (data.phase === "start") {
-        // Move cursor to center of window when fromCenter is set
-        if (data.fromCenter) {
-          moveCursor(window.innerWidth / 2, window.innerHeight / 2);
-        }
+        // Always move cursor to center on drag start
+        moveCursor(window.innerWidth / 2, window.innerHeight / 2);
         const target = elementAtCursor();
         dispatchPointerEvent("pointerdown", target, { button: 0, buttons: 1 });
         dispatchMouseEvent("mousedown", target, { button: 0, buttons: 1 });
@@ -264,14 +262,24 @@
         dispatchPointerEvent("pointermove", target, { buttons: 1 });
         dispatchMouseEvent("mousemove", target, { buttons: 1 });
       } else if (data.phase === "end") {
-        const target = elementAtCursor();
-        dispatchPointerEvent("pointerup", target, { button: 0, buttons: 0 });
-        dispatchMouseEvent("mouseup", target, { button: 0, buttons: 0 });
-        isPressed = false;
-        cursorEl.classList.remove("pressing");
-        // Reset cursor to center for next gesture
-        moveCursor(window.innerWidth / 2, window.innerHeight / 2);
+        try {
+          const target = elementAtCursor();
+          dispatchPointerEvent("pointerup", target, { button: 0, buttons: 0 });
+          dispatchMouseEvent("mouseup", target, { button: 0, buttons: 0 });
+        } catch (_) {
+          // Target may have been removed from DOM during drag
+        } finally {
+          isPressed = false;
+          cursorEl.classList.remove("pressing");
+          // Always reset cursor to center for next gesture
+          moveCursor(window.innerWidth / 2, window.innerHeight / 2);
+        }
       }
+    },
+
+    // Center cursor explicitly
+    centerCursor() {
+      moveCursor(window.innerWidth / 2, window.innerHeight / 2);
     },
 
     // Key press passthrough
