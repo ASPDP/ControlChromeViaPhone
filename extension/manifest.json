@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Remote Pseudo Cursor",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Control browser pages with a pseudo cursor from your phone — no system cursor needed",
   "permissions": ["storage"],
   "action": {
