@@ -327,11 +327,16 @@
         return;
       }
 
+      console.log("[remote-cursor] received:", msg.type, "enabled:", enabled);
+
       if (!enabled) return;
 
       const handler = handlers[msg.type];
       if (handler) {
+        console.log("[remote-cursor] calling handler:", msg.type);
         handler(msg);
+      } else {
+        console.log("[remote-cursor] no handler for:", msg.type);
       }
     };
 

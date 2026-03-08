@@ -74,6 +74,7 @@ wss.on("connection", (ws) => {
     // Relay: controller → all browsers
     if (role === "controller") {
       const payload = raw.toString();
+      console.log(`[relay] ${msg.type} → ${clients.browser.size} browser(s)`);
       for (const browser of clients.browser) {
         if (browser.readyState === 1) {
           browser.send(payload);
