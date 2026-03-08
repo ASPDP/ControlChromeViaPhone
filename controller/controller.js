@@ -224,8 +224,8 @@
       if (mode === "trackpad") {
         send({ type: "move", dx: dx * SENSITIVITY, dy: dy * SENSITIVITY });
       } else if (mode === "drag") {
-        // Drag mode: send relative deltas as drag movement
-        send({ type: "drag", phase: "move", dx: dx * SENSITIVITY, dy: dy * SENSITIVITY });
+        // Drag mode: 2x sensitivity for map panning
+        send({ type: "drag", phase: "move", dx: dx * SENSITIVITY * 2, dy: dy * SENSITIVITY * 2 });
       } else if (mode === "scroll") {
         send({ type: "scroll", dx: -dx * SCROLL_SENSITIVITY, dy: -dy * SCROLL_SENSITIVITY });
       }
