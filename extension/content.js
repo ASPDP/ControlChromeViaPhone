@@ -269,6 +269,8 @@
         dispatchMouseEvent("mouseup", target, { button: 0, buttons: 0 });
         isPressed = false;
         cursorEl.classList.remove("pressing");
+        // Reset cursor to center for next gesture
+        moveCursor(window.innerWidth / 2, window.innerHeight / 2);
       }
     },
 
