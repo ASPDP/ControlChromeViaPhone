@@ -177,20 +177,26 @@
       }
     },
 
-    down(_data) {
+    down(data) {
+      const btn = data.button ?? 0;
+      const btns = btn === 2 ? 2 : 1;
       isPressed = true;
       cursorEl.classList.add("pressing");
       const target = elementAtCursor();
-      dispatchPointerEvent("pointerdown", target, { button: 0, buttons: 1 });
-      dispatchMouseEvent("mousedown", target, { button: 0, buttons: 1 });
-      dispatchTouchEvent("touchstart", target);
+      dispatchPointerEvent("pointerdown", target, { button: btn, buttons: btns });
+      dispatchMouseEvent("mousedown", target, { button: btn, buttons: btns });
+      if (btn === 0) dispatchTouchEvent("touchstart", target);
     },
 
-    up(_data) {
+    up(data) {
+      const btn = data.button ?? 0;
       const target = elementAtCursor();
-      dispatchPointerEvent("pointerup", target, { button: 0, buttons: 0 });
-      dispatchMouseEvent("mouseup", target, { button: 0, buttons: 0 });
-      dispatchTouchEvent("touchend", target);
+      dispatchPointerEvent("pointerup", target, { button: btn, buttons: 0 });
+      dispatchMouseEvent("mouseup", target, { button: btn, buttons: 0 });
+      if (btn === 2) {
+        dispatchMouseEvent("contextmenu", target, { button: 2 });
+      }
+      if (btn === 0) dispatchTouchEvent("touchend", target);
       isPressed = false;
       cursorEl.classList.remove("pressing");
     },

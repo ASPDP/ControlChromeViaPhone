@@ -298,25 +298,51 @@
   // (This is already naturally supported by the tap-and-hold in the pad)
 
   // ── Action buttons ────────────────────────────────────────────────
-  document.getElementById("btn-left").addEventListener("touchstart", (e) => {
+  let lmbHeld = false;
+  let rmbHeld = false;
+  const SCROLL_STEP = 120;
+
+  const btnLmb = document.getElementById("btn-lmb");
+  const btnRmb = document.getElementById("btn-rmb");
+
+  btnLmb.addEventListener("touchstart", (e) => {
     e.preventDefault();
-    send({ type: "click" });
+    if (!lmbHeld) {
+      lmbHeld = true;
+      btnLmb.classList.add("held");
+      btnLmb.textContent = "LMB \u2716";
+      send({ type: "down", button: 0 });
+    } else {
+      lmbHeld = false;
+      btnLmb.classList.remove("held");
+      btnLmb.textContent = "LMB";
+      send({ type: "up", button: 0 });
+    }
   });
 
-  document.getElementById("btn-right").addEventListener("touchstart", (e) => {
+  btnRmb.addEventListener("touchstart", (e) => {
     e.preventDefault();
-    send({ type: "rightclick" });
+    if (!rmbHeld) {
+      rmbHeld = true;
+      btnRmb.classList.add("held");
+      btnRmb.textContent = "RMB \u2716";
+      send({ type: "down", button: 2 });
+    } else {
+      rmbHeld = false;
+      btnRmb.classList.remove("held");
+      btnRmb.textContent = "RMB";
+      send({ type: "up", button: 2 });
+    }
   });
 
-  document.getElementById("btn-back").addEventListener("touchstart", (e) => {
+  document.getElementById("btn-scroll-up").addEventListener("touchstart", (e) => {
     e.preventDefault();
-    send({ type: "key", key: "BrowserBack", code: "BrowserBack" });
-    history.back.call(null); // no-op, just sends the key
+    send({ type: "scroll", dx: 0, dy: -SCROLL_STEP });
   });
 
-  document.getElementById("btn-fwd").addEventListener("touchstart", (e) => {
+  document.getElementById("btn-scroll-down").addEventListener("touchstart", (e) => {
     e.preventDefault();
-    send({ type: "key", key: "BrowserForward", code: "BrowserForward" });
+    send({ type: "scroll", dx: 0, dy: SCROLL_STEP });
   });
 
   // Prevent any default touch behavior on the entire body

@@ -134,6 +134,12 @@ html, body {
   transform: scale(0.96);
 }
 
+.action-btn.held {
+  background: #da3633;
+  border-color: #da3633;
+  color: #fff;
+}
+
 .action-btn.small {
   flex: 0.5;
   font-size: 16px;
