@@ -238,21 +238,31 @@
       target.dispatchEvent(evt);
     },
 
-    // Two-finger drag for map panning (dispatches as drag sequence)
+    // Drag for map panning (dispatches as drag sequence)
     drag(data) {
-      const target = elementAtCursor();
       if (data.phase === "start") {
+        // Move cursor to center of window when fromCenter is set
+        if (data.fromCenter) {
+          moveCursor(window.innerWidth / 2, window.innerHeight / 2);
+        }
+        const target = elementAtCursor();
         dispatchPointerEvent("pointerdown", target, { button: 0, buttons: 1 });
         dispatchMouseEvent("mousedown", target, { button: 0, buttons: 1 });
+        isPressed = true;
+        cursorEl.classList.add("pressing");
       } else if (data.phase === "move") {
         const newX = cursorX + data.dx;
         const newY = cursorY + data.dy;
         moveCursor(newX, newY);
+        const target = elementAtCursor();
         dispatchPointerEvent("pointermove", target, { buttons: 1 });
         dispatchMouseEvent("mousemove", target, { buttons: 1 });
       } else if (data.phase === "end") {
+        const target = elementAtCursor();
         dispatchPointerEvent("pointerup", target, { button: 0, buttons: 0 });
         dispatchMouseEvent("mouseup", target, { button: 0, buttons: 0 });
+        isPressed = false;
+        cursorEl.classList.remove("pressing");
       }
     },
 

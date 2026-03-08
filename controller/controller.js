@@ -47,7 +47,7 @@
   connect();
 
   // ── Mode switching ────────────────────────────────────────────────
-  let mode = "trackpad"; // "trackpad" | "touch" | "scroll"
+  let mode = "trackpad"; // "trackpad" | "drag" | "scroll"
   const modeBtns = document.querySelectorAll(".mode-btn");
   modeBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -155,9 +155,9 @@
       }
     }
 
-    // In touch mode, send down event
-    if (mode === "touch" && activeTouches.size === 1) {
-      send({ type: "down" });
+    // In drag mode, start drag from center of browser window
+    if (mode === "drag" && activeTouches.size === 1) {
+      send({ type: "drag", phase: "start", fromCenter: true });
     }
   }, { passive: false });
 
@@ -223,16 +223,9 @@
 
       if (mode === "trackpad") {
         send({ type: "move", dx: dx * SENSITIVITY, dy: dy * SENSITIVITY });
-      } else if (mode === "touch") {
-        // Map phone screen position to browser viewport proportionally
-        const normX = relX / padRect.width;
-        const normY = relY / padRect.height;
-        // Send normalized coordinates; extension maps to window size
-        send({
-          type: "moveTo",
-          x: normX * screen.width,  // approximate; extension clamps to its viewport
-          y: normY * screen.height,
-        });
+      } else if (mode === "drag") {
+        // Drag mode: send relative deltas as drag movement
+        send({ type: "drag", phase: "move", dx: dx * SENSITIVITY, dy: dy * SENSITIVITY });
       } else if (mode === "scroll") {
         send({ type: "scroll", dx: -dx * SCROLL_SENSITIVITY, dy: -dy * SCROLL_SENSITIVITY });
       }
@@ -250,9 +243,9 @@
 
       if (!state) continue;
 
-      // In touch mode, send up
-      if (mode === "touch") {
-        send({ type: "up" });
+      // In drag mode, end the drag
+      if (mode === "drag") {
+        send({ type: "drag", phase: "end" });
         continue;
       }
 
