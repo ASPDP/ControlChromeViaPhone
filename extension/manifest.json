@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Remote Pseudo Cursor",
+  "version": "1.0.0",
+  "description": "Control browser pages with a pseudo cursor from your phone — no system cursor needed",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon48.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["cursor.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

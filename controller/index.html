@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Remote Cursor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Status bar -->
+  <div id="status-bar">
+    <span id="status-dot"></span>
+    <span id="status-text">Connecting…</span>
+    <span id="browser-count"></span>
+  </div>
+
+  <!-- Mode switcher -->
+  <div id="mode-bar">
+    <button class="mode-btn active" data-mode="trackpad">Trackpad</button>
+    <button class="mode-btn" data-mode="touch">Touch</button>
+    <button class="mode-btn" data-mode="scroll">Scroll</button>
+  </div>
+
+  <!-- Main touchpad area -->
+  <div id="pad"></div>
+
+  <!-- Bottom action buttons -->
+  <div id="actions">
+    <button id="btn-left" class="action-btn">Left Click</button>
+    <button id="btn-right" class="action-btn">Right Click</button>
+    <button id="btn-back" class="action-btn small">&#9664;</button>
+    <button id="btn-fwd" class="action-btn small">&#9654;</button>
+  </div>
+
+<script src="controller.js"></script>
+</body>
+</html>
